@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>期待的日子倒數中</title>
+    <style>
+        /* 這裡控制網頁的視覺外觀 */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a; /* 深色背景，舒服不刺眼 */
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            color: #dddddd;
+        }
+
+        /* 倒數數字的大框框 */
+        .countdown-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .time-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            min-width: 80px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #ff7675; /* 漂亮的粉橘色數字 */
+            display: block;
+        }
+
+        .label {
+            font-size: 0.9rem;
+            color: #888888;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>☀️ 距離放暑假還有...</h1>
+
+    <div class="countdown-container">
+        <div class="time-box">
+            <span class="number" id="days">00</span>
+            <span class="label">天</span>
+        </div>
+        <div class="time-box">
+            <span class="number" id="hours">00</span>
+            <span class="label">時</span>
+        </div>
+        <div class="time-box">
+            <span class="number" id="minutes">00</span>
+            <span class="label">分</span>
+        </div>
+        <div class="time-box">
+            <span class="number" id="seconds">00</span>
+            <span class="label">秒</span>
+        </div>
+    </div>
+
+    <script>
+        // 1. 設定你想倒數的目標日期（格式：年-月-日 時:分:秒）
+        // 可以自由修改這個日期，例如改成你期待的某個日子
+        const targetDate = new Date("2026-06-25T00:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            // 計算 天、時、分、秒
+            const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+            // 如果時間還沒到，就把數字放進網頁中（補零讓畫面更整齊）
+            if (difference > 0) {
+                document.getElementById("days").innerText = d < 10 ? "0" + d : d;
+                document.getElementById("hours").innerText = h < 10 ? "0" + h : h;
+                document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
+                document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
+            } else {
+                // 如果時間到了顯示這個
+                document.body.innerHTML = "<h1>🎉 暑假到了！！！</h1>";
+                clearInterval(interval);
+            }
+        }
+
+        // 每 1 秒（1000毫秒）自動執行一次 updateCountdown 函數
+        const interval = setInterval(updateCountdown, 1000);
+        
+        // 網頁一打開立刻執行一次，避免畫面空白一秒
+        updateCountdown();
+    </script>
+
+</body>
+</html>
